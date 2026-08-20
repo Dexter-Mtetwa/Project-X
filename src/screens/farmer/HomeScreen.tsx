@@ -31,6 +31,11 @@ export const FarmerHomeScreen: React.FC<{ navigation: any }> = ({ navigation }) 
       navigation.navigate('Auth');
       return;
     }
+    // Tab screens must be navigated via the FarmerHome tab container
+    if (screen === 'Vets' || screen === 'Chats' || screen === 'Profile') {
+      navigation.navigate('FarmerHome', { screen });
+      return;
+    }
     navigation.navigate(screen);
   };
 
@@ -57,7 +62,7 @@ export const FarmerHomeScreen: React.FC<{ navigation: any }> = ({ navigation }) 
         {/* Emergency Banner */}
         <TouchableOpacity
           style={styles.emergencyCard}
-          onPress={() => navigation.navigate('Vets')}
+          onPress={() => navigation.navigate('FarmerHome', { screen: 'Vets' })}
           activeOpacity={0.8}
         >
           <View style={styles.emergencyIcon}>

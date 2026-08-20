@@ -39,7 +39,7 @@ export const VetDirectoryScreen: React.FC<{ navigation: any }> = ({ navigation }
   const [filter, setFilter] = useState('All');
 
   const handleVetPress = (item: any) => {
-    navigation.navigate('VetProfileView', { vetId: item.id, vet: item });
+    navigation.getParent()?.navigate('VetProfileView', { vetId: item.id, vet: item });
   };
 
   const [mapVisible, setMapVisible] = useState(false);

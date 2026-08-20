@@ -50,7 +50,7 @@ export const AssistantScreen: React.FC<{ navigation: any }> = ({ navigation }) =
         const signInPromptIndex = prev.findIndex(m => m.assessmentData?.showSignInPrompt);
         if (signInPromptIndex !== -1) {
           const updatedMessages = prev.filter((_, idx) => idx !== signInPromptIndex);
-          
+
           let lastUserMsgIndex = -1;
           for (let i = signInPromptIndex - 1; i >= 0; i--) {
             if (updatedMessages[i].role === 'user') {
@@ -62,7 +62,7 @@ export const AssistantScreen: React.FC<{ navigation: any }> = ({ navigation }) =
           if (lastUserMsgIndex !== -1) {
             const lastUserMsg = updatedMessages[lastUserMsgIndex];
             const historyUntilThen = updatedMessages.slice(0, lastUserMsgIndex);
-            
+
             setTimeout(() => {
               processLoggedInMessage(lastUserMsg.content, historyUntilThen, user);
             }, 100);
@@ -80,8 +80,7 @@ export const AssistantScreen: React.FC<{ navigation: any }> = ({ navigation }) =
     if (!activeUser) return 'guest'; // Bypass Supabase record creation for guest users
     if (assessmentId) return assessmentId;
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      const currentUser = activeUser || session?.user;
+      const currentUser = activeUser;
       if (!currentUser) return 'guest'; // Safety fallback
 
       const { data, error } = await supabase
@@ -144,7 +143,7 @@ export const AssistantScreen: React.FC<{ navigation: any }> = ({ navigation }) =
       const response = await aiService.sendMessage(text, history, id, 'Livestock');
 
       const meta = response.metadata || {};
-      
+
       const aiMsg: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
@@ -179,7 +178,7 @@ export const AssistantScreen: React.FC<{ navigation: any }> = ({ navigation }) =
       const response = await aiService.sendMessage(text, history, id, 'Livestock');
 
       const meta = response.metadata || {};
-      
+
       const aiMsg: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
@@ -221,23 +220,23 @@ export const AssistantScreen: React.FC<{ navigation: any }> = ({ navigation }) =
         onAction={
           item.assessmentData?.likely_condition
             ? () => {
-                navigation.navigate('AssessmentResult', {
-                  assessmentId: assessmentId,
-                  assessment: item.assessmentData,
-                });
-              }
+              navigation.navigate('AssessmentResult', {
+                assessmentId: assessmentId,
+                assessment: item.assessmentData,
+              });
+            }
             : item.assessmentData?.showSignInPrompt
-            ? () => {
+              ? () => {
                 navigation.navigate('Auth');
               }
-            : undefined
+              : undefined
         }
         actionLabel={
           item.assessmentData?.likely_condition
             ? 'View Current Report'
             : item.assessmentData?.showSignInPrompt
-            ? 'Sign In / Register'
-            : undefined
+              ? 'Sign In / Register'
+              : undefined
         }
       />
     </View>
@@ -280,7 +279,7 @@ export const AssistantScreen: React.FC<{ navigation: any }> = ({ navigation }) =
       <KeyboardAvoidingView
         style={styles.chatArea}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
       >
         <FlatList
           ref={flatListRef}
@@ -333,11 +332,11 @@ const styles = StyleSheet.create({
   stageLine: { width: 40, height: 2, backgroundColor: colors.borderLight },
   lineActive: { backgroundColor: colors.primary },
   chatArea: { flex: 1 },
-  messageList: { 
-    paddingHorizontal: spacing.xl, 
-    paddingTop: spacing.xl, 
-    paddingBottom: 100, 
-    gap: spacing.md 
+  messageList: {
+    paddingHorizontal: spacing.xl,
+    paddingTop: spacing.xl,
+    paddingBottom: 100,
+    gap: spacing.md
   },
   messageWrapper: { gap: spacing.xs },
   thoughtContainer: {

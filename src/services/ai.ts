@@ -24,16 +24,8 @@ export const aiService = {
     assessmentId: string, 
     species: string = 'Cattle'
   ): Promise<AIResponse> {
-    const { data: { session } } = await supabase.auth.getSession();
-    
-    const headers: Record<string, string> = {};
-    if (session?.access_token) {
-      headers['Authorization'] = `Bearer ${session.access_token}`;
-    }
-
     const { data, error } = await supabase.functions.invoke('ai-assistant', {
       body: { symptoms, history, assessment_id: assessmentId, species },
-      headers,
     });
 
     if (error) {

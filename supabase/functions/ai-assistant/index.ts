@@ -69,7 +69,7 @@ For a simple greeting like "hi", set stage to "gathering_info" and leave medical
       method: "POST",
       headers: { "Authorization": `Bearer ${openAiKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "gpt-5.4-nano",
+        model: "gpt-4o-mini",
         messages: [{ role: "system", content: systemPrompt }, ...(history || []), { role: "user", content: symptoms || "Hello" }],
         response_format: { type: "json_object" }
       }),

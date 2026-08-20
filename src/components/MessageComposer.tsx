@@ -27,7 +27,7 @@ export const MessageComposer: React.FC<MessageComposerProps> = ({
   return (
     <View style={[
       styles.container,
-      { paddingBottom: Math.max(insets.bottom, spacing.md) }
+      { paddingBottom: Platform.OS === 'ios' ? Math.max(insets.bottom, spacing.md) : spacing.md }
     ]}>
       <View style={styles.inputWrapper}>
         <TextInput
@@ -36,7 +36,9 @@ export const MessageComposer: React.FC<MessageComposerProps> = ({
           onChangeText={setText}
           placeholder={placeholder}
           placeholderTextColor={colors.textTertiary}
-          multiline
+          multiline={text.length > 0}
+          numberOfLines={text.length > 0 ? undefined : 1}
+          ellipsizeMode="tail"
           maxLength={2000}
           editable={!disabled}
         />
